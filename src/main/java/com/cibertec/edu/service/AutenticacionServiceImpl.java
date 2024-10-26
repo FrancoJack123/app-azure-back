@@ -8,8 +8,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,8 @@ public class AutenticacionServiceImpl implements AutenticacionService {
     public UsuarioDTO validarUsuario(LoginRequestDTO loginRequestDTO) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:usuarios.txt");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(resource.getFile()))) {
+        try (InputStream inputStream = resource.getInputStream();
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             return br.lines()
                     .map(this::mapToUsuarioDTO)
                     .filter(usuario -> loginRequestDTO.codigoAlumno().equals(usuario.getCodigoAlumno()) &&
@@ -31,7 +33,7 @@ public class AutenticacionServiceImpl implements AutenticacionService {
                     .findFirst()
                     .orElse(null);
         } catch (IOException e) {
-            throw new IOException(e.getMessage(), e);
+            throw new IOException("Error al validar usuario", e);
         }
     }
 
@@ -39,7 +41,8 @@ public class AutenticacionServiceImpl implements AutenticacionService {
     public List<UsuarioDTO> listarUsuario() throws IOException {
         Resource resource = resourceLoader.getResource("classpath:usuarios.txt");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(resource.getFile()))) {
+        try (InputStream inputStream = resource.getInputStream();
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             return br.lines()
                     .map(this::mapToUsuarioDTO)
                     .collect(Collectors.toList());
