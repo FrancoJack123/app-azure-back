@@ -21,7 +21,7 @@ public class AutenticacionController {
         try {
             UsuarioDTO usuario = autenticacionService.validarUsuario(loginRequestDTO);
             if (usuario != null) {
-                return new LoginResponseDTO(usuario, "Login exitoso1");
+                return new LoginResponseDTO(usuario, "Login exitoso2");
             } else {
                 return new LoginResponseDTO(null, "Problemas en la autenticación");
             }
