@@ -31,7 +31,7 @@ public class AutenticacionServiceImpl implements AutenticacionService {
                     .findFirst()
                     .orElse(null);
         } catch (IOException e) {
-            throw new IOException("Error al validar usuario", e);
+            throw new IOException(e.getMessage(), e);
         }
     }
 
